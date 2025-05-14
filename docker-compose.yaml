@@ -1,0 +1,20 @@
+version: '3.8'
+
+networks:
+  app_network:
+    driver: bridge
+
+services:
+  bot:
+    build: .
+    container_name: bot
+    restart: always
+    environment:
+      - DOMAIN  
+      - TOKEN
+    ports:
+      - 8000:8000
+    networks:
+      - app_network
+    volumes:
+      - ./logs:/bot/logs
