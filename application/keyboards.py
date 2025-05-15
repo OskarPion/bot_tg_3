@@ -1,20 +1,8 @@
-from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-)
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-main = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="Каталог")],
-        [KeyboardButton(text="Корзина"), KeyboardButton(text="Контакты")],
-    ]
-)
 
-settings = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [InlineKeyboardButton(text="Youtube", url="https://youtube.com")],
-        [InlineKeyboardButton(text="GitHub", url="https:github.com")],
-    ]
-)
+def menu_keyboard():
+    builder = InlineKeyboardBuilder()
+    builder.button(text="Каталог", callback_data="catalog")
+    builder.adjust(1)
+    return builder.as_markup()

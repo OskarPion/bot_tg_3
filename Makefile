@@ -1,3 +1,4 @@
+.PHONY: logs kill down build all up 
 COMPOSE_FILES = -f docker-compose.yaml
 
 restart:
@@ -12,8 +13,8 @@ up:
 
 build:
 	sudo docker compose $(COMPOSE_FILES) --env-file .env build
-	
+
 logs:
-	sudo docker compose $(COMPOSE_FILES) logs --tail=1000 --follow
+	docker compose $(COMPOSE_FILES) logs --tail=1000 --follow
 
 all: down kill build up logs 

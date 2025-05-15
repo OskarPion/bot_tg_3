@@ -21,6 +21,6 @@ console_handler = logging.StreamHandler()
 logger = logging.getLogger("bot")
 logging.basicConfig(
     handlers=(file_handler, console_handler),
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s %(filename)s:%(lineno)d #%(levelname)-4s %(name)s: %(message)s",
 )

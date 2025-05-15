@@ -12,12 +12,23 @@ from config import TOKEN, DOMAIN, WEBHOOK_PATH, WEBHOOK_URL
 
 from application.handlers import router as handlers_router
 
+
+def print_registered_handlers(router):
+    # Для сообщений
+    print("Message handlers:")
+    for handler in router.message.handlers:
+        print(f"- Handler: {handler.callback.__name__}")
+        print(f"  Filters: {handler.filters}")
+
+    # Для callback-запросов
+    print("\nCallback handlers:")
+    for handler in router.callback_query.handlers:
+        print(f"- Handler: {handler.callback.__name__}")
+        print(f"  Filters: {handler.filters}")
+
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
-
-dp.include_router(handlers_router)
-
-app = FastAPI()
 
 
 async def check_and_update_webhook(bot: Bot):
@@ -31,7 +42,9 @@ async def check_and_update_webhook(bot: Bot):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    dp.include_router(handlers_router)
     asyncio.create_task(check_and_update_webhook(bot))
+    print_registered_handlers(handlers_router)
     logger.info("App started")
     # await start_messages()
     yield
