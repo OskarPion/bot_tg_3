@@ -26,6 +26,4 @@ async def how_are_you(message: Message):
 
 @router.callback_query(F.data == "catalog")
 async def catalog_button(callback: CallbackQuery):
-    logger.info(f"Received catalog callback: {callback}")
-
-    await callback.message.answer("Это будет каталог")
+    await callback.message.answer("Это будет каталог", reply_markup=kb.menu_keyboard())
