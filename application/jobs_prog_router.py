@@ -11,18 +11,20 @@ jobs_router = Router()
 
 
 @jobs_router.callback_query(F.data == "catalog")
-async def front_jobs(callback: CallbackQuery, state: FSMContext):
-    await state.set_state(JobsStates.jobs_name)
-    await callback.message.answer("Отправьте фронт или бек")
+async def jobs_buttons(callback: CallbackQuery):
+    await callback.message.edit_text("Отправьте фронт или бек", reply_markup=kb.jobs())
 
 
-@jobs_router.message(JobsStates.jobs_name)
-async def send_classifacation(message: Message, state: FSMContext):
-    await state.set_state(JobsStates.classification)
-    await message.answer("Отправьте вашу классификацию")
+@jobs_router.message(F.data == "frontend")
+async def frontend_button(message: Message):
+    await message.edit_text("Отправьте вашу классификацию", reply_markup=None)
 
 
-@jobs_router.message(JobsStates.classification)
-async def money(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer("Спасибо за заявку!", reply_markup=kb.menu_keyboard())
+@jobs_router.message(F.data == "backend")
+async def backend_button(message: Message):
+    await message.edit_text("Отправьте вашу классификацию", reply_markup=None)
+
+
+@jobs_router.message()
+async def done_jobs(message: Message):
+    await message.answer("Спасибо, мы вам перезвоним", reply_markup=kb.menu_keyboard())

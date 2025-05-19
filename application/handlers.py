@@ -24,6 +24,6 @@ async def how_are_you(message: Message):
     await message.answer("Gut")
 
 
-@router.callback_query(F.data == "catalog")
-async def catalog_button(callback: CallbackQuery):
-    await callback.message.answer("Это будет каталог", reply_markup=kb.menu_keyboard())
+@router.callback_query(F.data == "news")
+async def news_button(callback: CallbackQuery):
+    await callback.message.answer("news")
