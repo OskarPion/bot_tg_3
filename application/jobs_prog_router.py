@@ -15,16 +15,16 @@ async def jobs_buttons(callback: CallbackQuery):
     await callback.message.edit_text("Отправьте фронт или бек", reply_markup=kb.jobs())
 
 
-@jobs_router.message(F.data == "frontend")
-async def frontend_button(message: Message):
-    await message.edit_text("Отправьте вашу классификацию", reply_markup=None)
+@jobs_router.callback_query(F.data == "frontend")
+async def frontend_button(callback: CallbackQuery):
+    await callback.message.answer("Отправьте вашу классификацию", reply_markup=None)
 
 
-@jobs_router.message(F.data == "backend")
-async def backend_button(message: Message):
-    await message.edit_text("Отправьте вашу классификацию", reply_markup=None)
+@jobs_router.callback_query(F.data == "backend")
+async def backend_button(callback: CallbackQuery):
+    await callback.message.answer("Отправьте вашу классификацию", reply_markup=None)
 
 
 @jobs_router.message()
 async def done_jobs(message: Message):
-    await message.answer("Спасибо, мы вам перезвоним", reply_markup=kb.menu_keyboard())
+    await message.answer("Спасибо, мы вам перезвоним")
