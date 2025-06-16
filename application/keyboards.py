@@ -15,3 +15,12 @@ def jobs():
     jobs_builder.button(text="Backend", callback_data="backend")
     jobs_builder.adjust(2)
     return jobs_builder.as_markup()
+
+
+def photo_video_keyboard():
+    photo_video_builder = InlineKeyboardBuilder()
+    photo_video_builder.button(text="Отправить фото", callback_data='send_photo')
+    photo_video_builder.button(text="Отправить видео", callback_data='send_video')
+    photo_video_builder.button(text="Отправить файл", callback_data='send_file')
+    photo_video_builder.adjust(2)
+    return photo_video_builder.as_markup()

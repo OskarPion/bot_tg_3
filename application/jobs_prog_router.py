@@ -25,6 +25,7 @@ async def backend_button(callback: CallbackQuery):
     await callback.message.answer("Отправьте вашу классификацию", reply_markup=None)
 
 
-@jobs_router.message()
-async def done_jobs(message: Message):
+@jobs_router.message(JobsStates.somestate)
+async def done_jobs(message: Message, state: FSMContext):
     await message.answer("Спасибо, мы вам перезвоним")
+    await state.clear()
