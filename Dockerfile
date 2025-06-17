@@ -1,18 +1,28 @@
-FROM python:3.12-bullseye
+FROM python:3.12-slim-bullseye
 
 WORKDIR /bot
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libsndfile1 \
+    libgomp1 \
+    libatomic1 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Копирование зависимостей и установка Python-зависимостей
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
+
+# Копирование модели Vosk (лучше включить в образ)
+COPY application/vosk-model-small-ru-0.22 /bot/application/vosk-model-small-ru-0.22
 
 # Копирование исходного кода
 COPY . .
 
-# Настройка прав и локали
-RUN chmod 755 /bot
 ENV TZ=Europe/Moscow
+ENV PYTHONUNBUFFERED=1
 
-# Запуск бота с фиксацией на ядрах 0-1
+# Запуск бота
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

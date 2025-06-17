@@ -8,10 +8,11 @@ services:
   bot:
     build: .
     container_name: bot
-    restart: always
+    restart: unless-stopped
     environment:
-      - DOMAIN  
-      - TOKEN
+      - DOMAIN=${DOMAIN}
+      - TOKEN=${TOKEN}
+      - TZ=Europe/Moscow
     ports:
       - 8000:8000
     networks:
