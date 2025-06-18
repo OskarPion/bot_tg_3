@@ -14,10 +14,14 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from application import register_routers
 
+from middlewares.rate_limit import RateLimitMiddleware
+
 
 bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
+
+dp.message.middleware(RateLimitMiddleware(delay=2.0))
 
 
 async def check_and_update_webhook(bot: Bot):
