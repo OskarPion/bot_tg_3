@@ -5,7 +5,16 @@ from aiogram import Dispatcher
 from .photo_video_router import photo_video_router
 from .document_router import document_router
 from .voice_router import voice_router
+from .photo_router import photo_router
 
 
 def register_routers(dp: Dispatcher):
-    dp.include_routers(router, request_router, photo_video_router, document_router, voice_router,jobs_router)
+    dp.include_routers(
+        router,
+        request_router,
+        photo_video_router,
+        document_router,
+        voice_router,
+        jobs_router,
+        photo_router,
+    )
