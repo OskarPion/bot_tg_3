@@ -13,7 +13,7 @@ from config import TOKEN, DOMAIN, WEBHOOK_PATH, WEBHOOK_URL
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from application import register_routers
-
+from db.connection import connect_to_db, disconnect_from_db
 from middlewares.rate_limit import RateLimitMiddleware
 
 
@@ -35,11 +35,13 @@ async def check_and_update_webhook(bot: Bot):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await connect_to_db()
     register_routers(dp)
     asyncio.create_task(check_and_update_webhook(bot))
     logger.info("App started")
     # await start_messages()
     yield
+    await disconnect_from_db()
     await bot.session.close()
     logger.info("App stopped")
 
