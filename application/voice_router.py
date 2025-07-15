@@ -20,6 +20,7 @@ except Exception as e:
     logger.error(f"Ошибка загрузки модели Vosk: {e}")
     model = None
 
+
 @voice_router.message(F.voice)
 async def handle_voice_message(message: Message, bot: Bot):
     if model is None:
@@ -46,7 +47,9 @@ async def handle_voice_message(message: Message, bot: Bot):
 
         # Конвертация в WAV
         audio = AudioSegment.from_ogg(ogg_path)
-        audio.export(wav_path, format="wav", codec="pcm_s16le")  # Явно указываем параметры
+        audio.export(
+            wav_path, format="wav", codec="pcm_s16le"
+        )  # Явно указываем параметры
 
         # Распознавание
         wf = wave.open(wav_path, "rb")
@@ -69,15 +72,19 @@ async def handle_voice_message(message: Message, bot: Bot):
         results.append(final_result.get("text", ""))
 
         text = " ".join(filter(None, results))  # Фильтруем пустые строки
-        
+
         if text.strip():
             await message.reply(f"Распознанный текст: {text}")
         else:
-            await message.reply("Не удалось распознать текст. Возможно, сообщение слишком короткое или неразборчивое.")
+            await message.reply(
+                "Не удалось распознать текст. Возможно, сообщение слишком короткое или неразборчивое."
+            )
 
     except Exception as e:
         logger.exception(f"Ошибка при обработке голосового сообщения: {e}")
-        await message.reply(f"Произошла ошибка при обработке голосового сообщения: {str(e)}")
+        await message.reply(
+            f"Произошла ошибка при обработке голосового сообщения: {str(e)}"
+        )
 
     finally:
         # Удаление временных файлов

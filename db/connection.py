@@ -1,29 +1,14 @@
 from config.logger import logger
-from .database import database, metadata
-from sqlalchemy import create_engine
-from config.settings import DB_URL
-
-
-# создаём sync engine для create_all
-sync_engine = create_engine(DB_URL.replace("+asyncpg", ""))  # без asyncpg
+from .database import ormar_base_config
 
 
 async def connect_to_db():
-    try:
-        await database.connect()
-        logger.info("Database connected successfully")
-
-        # create tables (если не существуют)
-        metadata.create_all(sync_engine)
-        logger.info("Database tables created")
-    except Exception as e:
-        logger.error(f"Database connection error: {e}")
-        raise
+    ormar_base_config.metadata.create_all(ormar_base_config.engine)
+    if not ormar_base_config.database.is_connected:
+        await ormar_base_config.database.connect()
 
 
 async def disconnect_from_db():
-    try:
-        await database.disconnect()
-        logger.info("Database disconnected successfully")
-    except Exception as e:
-        logger.error(f"Database disconnection error: {e}")
+    if ormar_base_config.database.is_connected:
+        await ormar_base_config.database.disconnect()
+    logger.info("Disconnect from database")

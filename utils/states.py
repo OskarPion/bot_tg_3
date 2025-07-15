@@ -21,5 +21,3 @@ class PhotoStates(StatesGroup):
 
 class DocumentStates(StatesGroup):
     document = State()
-
-
